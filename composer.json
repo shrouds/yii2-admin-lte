@@ -1,0 +1,21 @@
+{
+    "name": "shrouds/yii2-admin-lte",
+    "description": "Admin LTE template 4 Yii2 fw",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension","Admin LTE","admin","template"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "DjStON",
+            "email": "game.dev.servers@gmail.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "~2.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "shrouds\\admin\\": ""
+        }
+    }
+}
