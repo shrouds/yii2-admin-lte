@@ -10,6 +10,7 @@ namespace shrouds\admin\widgets;
 
 use Yii;
 use yii\base\Widget;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
 class Menu extends Widget
@@ -28,6 +29,7 @@ class Menu extends Widget
     public $content;
 
     public $menuTemplate = '<ul class="sidebar-menu" data-widget="tree"> {CONTENT} </ul>';
+
 
 
     public function run ()
@@ -50,12 +52,12 @@ class Menu extends Widget
     {
         $tag['image'] = Html::tag(
             'div',
-                Html::img($this->userPanelOptions['image'], ['class' => 'img-circle']),
-                ['class' => 'pull-left image']);
+            Html::img($this->userPanelOptions['image'], ['class' => 'img-circle']),
+            ['class' => 'pull-left image']);
         $tag['user'] = Html::tag(
             'div',
-                Html::tag('p','UserName').Html::a(Html::tag('i','', ['class' => 'fa fa-circle text-success']).'Online'),
-                ['class' => 'pull-left info']);
+            Html::tag('p','UserName').Html::a(Html::tag('i','', ['class' => 'fa fa-circle text-success']).'Online'),
+            ['class' => 'pull-left info']);
         $this->content = Html::tag('div', $tag['image'].$tag['user'], ['class' => 'user-panel']);
     }
 
@@ -70,13 +72,13 @@ class Menu extends Widget
     protected function renderItems($items)
     {
         $line = [];
-        foreach ($items as $item)
+        foreach ($items as $i => $item)
         {
             $params = [];
-            if($this->isItemActive($item)){
-                $params['class'] = 'active';
-            }
             $itemConfig = [];
+            if($this->isItemActive($item)){
+                Html::addCssClass($params['class'], 'active');
+            }
             if(isset($item['options']['icon']) && !empty($item['options']['icon']))
             {
                 $itemConfig['icon'] = Html::tag('i', '', ['class' => $item['options']['icon']]);
@@ -84,18 +86,22 @@ class Menu extends Widget
             $itemConfig['label'] = Html::tag('span', $item['label']);
             if (!empty($item['items']) && is_array($item['items']))
             {
-                $params['class'] .= ' treeview';
+                if($this->parentIsActive($item['items'])){
+                    Html::addCssClass($params['class'], 'active');
+                }
+                Html::addCssClass($params['class'], 'treeview');
                 $itemConfig['rightBox'] = Html::tag('span', Html::tag('span', '', ['class' => 'fa fa-angle-left pull-right']));
                 $itemConfig['submenu'] = Html::tag('ul', $this->renderItems($item['items']), ['class' => 'treeview-menu']);
+
             }
             if(!empty($item['url']) && is_array($item['url'])){
                 $content = Html::a($itemConfig['icon'].$itemConfig['label'].$itemConfig['rightBox'], \Yii::$app->urlManager->createUrl($item['url'])).$itemConfig['submenu'];
             }else{
-                $params['class'] = 'header';
+                Html::addCssClass($params['class'], 'header');
                 $content = $item['label'];
             }
 
-                $line[] = Html::tag('li', $content, $params);
+            $line[] = Html::tag('li', $content, $params);
         }
         return implode("\n", $line);
 
@@ -104,19 +110,32 @@ class Menu extends Widget
     protected function isItemActive($item)
     {
         if (isset($item['url']) && is_array($item['url']) && isset($item['url'][0])) {
+
             $route = Yii::getAlias($item['url'][0]);
             if ($route[0] !== '/' && Yii::$app->controller) {
-                $route = Yii::$app->controller->module->getUniqueId() . '/' . $route;
+                $route = Yii::$app->controller->module->getUniqueId() .'/'. $route;
             }
-            if (ltrim($route, '/') !== Yii::$app->controller->getRoute()) {
+            if (ltrim($route, '/') !== Yii::$app->request->resolve()[0]) {
                 return false;
             }
             unset($item['url']['#']);
-
             return true;
         }
 
         return false;
+    }
+
+    protected function parentIsActive($items)
+    {
+        foreach ($items as $item)
+        {
+            if($this->isItemActive($item)){
+                return true;
+                continue;
+            }
+        }
+        return false;
+
     }
 
 }
