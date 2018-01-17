@@ -25,7 +25,14 @@ to the require section of your `composer.json` file.
 Usage
 -----
 
-Once the extension is installed, simply use it in your code by  :
+Once the extension is installed, simply use it in your config by  :
 
 ```php
-<?= \shrouds\admin\AutoloadExample::widget(); ?>```
+'components' => [
+  'view' => [
+            'theme' => [
+                'class' => \shrouds\admin\AdminTheme::className()
+            ]
+        ]
+]
+```
