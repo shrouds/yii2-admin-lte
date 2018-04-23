@@ -23,7 +23,7 @@ class AdminTemplateAsset extends AssetBundle
         'js/demo.js'
     ];
     public $depends = [
-        'shrouds\yii2-admin-lte\FontAwesomeAsset',
+        'shrouds\admin\FontAwesomeAsset',
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapPluginAsset',
     ];
