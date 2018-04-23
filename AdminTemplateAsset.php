@@ -17,14 +17,13 @@ class AdminTemplateAsset extends AssetBundle
         'css/AdminLTE.min.css',
         'css/ionicons.min.css',
         'css/skins/_all-skins.min.css',
-        'css/font-awesome.min.css'
     ];
     public $js = [
         'js/adminlte.min.js',
-        //'js/pages/dashboard.js',
         'js/demo.js'
     ];
     public $depends = [
+        'shrouds\yii2-admin-lte\FontAwesomeAsset',
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapPluginAsset',
     ];

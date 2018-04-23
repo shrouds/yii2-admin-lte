@@ -90,7 +90,7 @@ class Menu extends Widget
                     Html::addCssClass($params['class'], 'active');
                 }
                 Html::addCssClass($params['class'], 'treeview');
-                $itemConfig['rightBox'] = Html::tag('span', Html::tag('span', '', ['class' => 'fa fa-angle-left pull-right']));
+                $itemConfig['rightBox'] = Html::tag('span', Html::tag('span', '', ['class' => 'fa fa-angle-left pull-right']), ['class' => 'pull-right-container']);
                 $itemConfig['submenu'] = Html::tag('ul', $this->renderItems($item['items']), ['class' => 'treeview-menu']);
 
             }

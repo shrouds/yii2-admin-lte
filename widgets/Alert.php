@@ -40,7 +40,7 @@ class Alert extends Widget
 
             foreach ((array) $flash as $i => $message) {
                 $button = Html::button('&times;', ['type' => 'button', 'class' => 'close', 'data-dismiss' => 'alert', 'aria-hidden' => 'true']);
-                $header = Html::tag('h4', Html::tag('i', '', ['class' => $this->iconTypes[$type]]).'Заголовок');
+                $header = Html::tag('h4', Html::tag('i', '', ['class' => $this->iconTypes[$type]]).strtoupper($type));
                 echo Html::tag('div', $button.$header.$message, ['class' => $this->alertTypes[$type]]);
             }
 
